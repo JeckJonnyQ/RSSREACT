@@ -1,3 +1,3 @@
 # CLASS-COMPONENTS/.husky/pre-commit
 cd CLASS-COMPONENTS
-npm run lint
+npx lint-staged
