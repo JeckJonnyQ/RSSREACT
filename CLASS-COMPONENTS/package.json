@@ -14,12 +14,10 @@
   "lint-staged": {
     ".(js|jsx|ts|tsx)": [
       "npm run format:fix",
-      "npm run lint",
-      "git add"
+      "npm run lint"
     ],
     ".(css, scss, md, json)": [
-      "npm run format:fix",
-      "git add"
+      "npm run format:fix"
     ]
   },
   "dependencies": {
