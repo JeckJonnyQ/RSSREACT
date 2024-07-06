@@ -1,35 +1,61 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Component } from "react";
+import SearchForm from "../src/SearchForm/SearchForm";
+import SearchResult from "../src/SearchResult/SearchResult";
+// import ErrorBoundary from "./ErrorBoundary";
 
-function App() {
-  const [count, setCount] = useState(0);
+import { fetchPokemonData } from "./api/api";
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+interface AppState {
+  query: string;
+  pokemonList: [];
+  searchValue: string;
+}
+
+class App extends Component<object, AppState> {
+  state: AppState = {
+    query: "",
+    pokemonList: [],
+    searchValue: "",
+  };
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  async fetchData() {
+    try {
+      const data = await fetchPokemonData();
+      this.setState({ pokemonList: data.results });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchValue: event.target.value.trim() });
+  };
+
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.setState({ query: this.state.searchValue });
+  };
+
+  render() {
+    const { query, searchValue, pokemonList } = this.state;
+
+    return (
+      <>
+        {/* <ErrorBoundary> */}
+        <SearchForm
+          searchValue={searchValue}
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        />
+        <SearchResult query={query} pokemonList={pokemonList} />
+        {/* </ErrorBoundary> */}
+      </>
+    );
+  }
 }
 
 export default App;
