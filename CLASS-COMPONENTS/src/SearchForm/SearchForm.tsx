@@ -1,15 +1,19 @@
 import { Component } from "react";
 import "./SearchForm.scss";
 
+import { PokemonList } from "../types/PokemonArray";
+
 interface SearchFormProps {
   searchValue: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onThrowError: () => void;
+  pokemonList: PokemonList[];
 }
 
 class SearchForm extends Component<SearchFormProps> {
   render() {
-    const { searchValue, onChange, onSubmit } = this.props;
+    const { searchValue, onChange, onSubmit, onThrowError } = this.props;
 
     return (
       <div className="wrapper__search">
@@ -29,7 +33,11 @@ class SearchForm extends Component<SearchFormProps> {
             >
               Search
             </button>
-            <button className="search__form-inner_btn" type="button">
+            <button
+              className="search__form-inner_btn"
+              type="button"
+              onClick={onThrowError}
+            >
               Error
             </button>
           </div>

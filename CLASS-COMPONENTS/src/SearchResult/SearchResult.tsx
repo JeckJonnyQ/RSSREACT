@@ -1,26 +1,37 @@
 import { Component } from "react";
-
-interface SearchResultProps {
-  id: number;
-  name: string;
-  is_main_series: boolean;
-}
+import "./SearchResult.scss";
+import { PokemonList, PokemonDetails } from "../types/PokemonArray";
 
 interface Props {
   query: string;
-  pokemonList: SearchResultProps[];
+  pokemonList: PokemonList[];
+  pokemonDetails: PokemonDetails[];
 }
 
-class SearchResultsComponent extends Component<Props> {
+class SearchResult extends Component<Props> {
   render() {
-    const { pokemonList } = this.props;
+    const { pokemonDetails, query } = this.props;
+
+    // Фильтруем покемонов по данным query запроса/пропса
+    const filteredPokemonDetails = pokemonDetails.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(query.toLowerCase())
+    );
+
+    const displayPokemonDetails = query
+      ? filteredPokemonDetails
+      : pokemonDetails;
 
     return (
-      <div>
-        {pokemonList.map((result) => (
-          <div key={result.name}>
-            <h3>{result.name}</h3>
-            {/* <p>{result.description}</p> */}
+      <div className="wrapper__card">
+        {displayPokemonDetails.map((pokemon) => (
+          <div key={pokemon.name} className="card__content">
+            <h3 className="card__content_title">{pokemon.name}</h3>
+            <p className="card__content_desc">
+              Pokemon Height: {pokemon.height}
+            </p>
+            <p className="card__content_desc">
+              Pokemon Weight: {pokemon.weight}
+            </p>
           </div>
         ))}
       </div>
@@ -28,4 +39,4 @@ class SearchResultsComponent extends Component<Props> {
   }
 }
 
-export default SearchResultsComponent;
+export default SearchResult;
