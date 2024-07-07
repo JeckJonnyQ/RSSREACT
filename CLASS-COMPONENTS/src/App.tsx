@@ -72,10 +72,6 @@ class App extends Component<object, AppState> {
     this.setState({ query: this.state.searchValue });
   };
 
-  handleThrowError = () => {
-    throw new Error("Test error"); // Вызываем ошибку для демонстрации
-  };
-
   render() {
     const { query, searchValue, pokemonList, pokemonDetails } = this.state;
     return (
@@ -85,7 +81,6 @@ class App extends Component<object, AppState> {
             searchValue={searchValue}
             onChange={this.handleChange}
             onSubmit={this.handleSubmit}
-            onThrowError={this.handleThrowError}
             pokemonList={pokemonList}
           />
           <SearchResult

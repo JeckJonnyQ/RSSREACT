@@ -7,13 +7,33 @@ interface SearchFormProps {
   searchValue: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  onThrowError: () => void;
   pokemonList: PokemonList[];
 }
 
-class SearchForm extends Component<SearchFormProps> {
+interface SearchFormState {
+  hasError: boolean;
+}
+
+class SearchForm extends Component<SearchFormProps, SearchFormState> {
+  state = {
+    hasError: false,
+  };
+
+  handleButtonClick = () => {
+    try {
+      throw new Error("Error triggered by button click in SearchForm");
+    } catch (error) {
+      console.error("Error caught in SearchForm:", error);
+      this.setState({ hasError: true });
+    }
+  };
+
   render() {
-    const { searchValue, onChange, onSubmit, onThrowError } = this.props;
+    const { searchValue, onChange, onSubmit } = this.props;
+
+    if (this.state.hasError) {
+      throw new Error("Error in SearchForm component");
+    }
 
     return (
       <div className="wrapper__search">
@@ -36,7 +56,7 @@ class SearchForm extends Component<SearchFormProps> {
             <button
               className="search__form-inner_btn"
               type="button"
-              onClick={onThrowError}
+              onClick={this.handleButtonClick}
             >
               Error
             </button>
