@@ -15,6 +15,8 @@ interface SearchFormState {
 }
 
 const asd: any = "asd";
+const qwe: any = "asd";
+
 
 class SearchForm extends Component<SearchFormProps, SearchFormState> {
   state = {

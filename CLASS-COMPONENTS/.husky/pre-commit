@@ -1,3 +1,2 @@
-# CLASS-COMPONENTS/.husky/pre-commit
 cd CLASS-COMPONENTS
 npx lint-staged
