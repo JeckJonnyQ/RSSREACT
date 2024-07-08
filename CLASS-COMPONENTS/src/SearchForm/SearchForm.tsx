@@ -14,6 +14,8 @@ interface SearchFormState {
   hasError: boolean;
 }
 
+const asd: any = "asd";
+
 class SearchForm extends Component<SearchFormProps, SearchFormState> {
   state = {
     hasError: false,
