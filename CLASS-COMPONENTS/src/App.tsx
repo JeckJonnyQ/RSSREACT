@@ -6,6 +6,8 @@ import SearchResult from "../src/SearchResult/SearchResult";
 import { fetchPokemonData, fetchSingleData } from "./api/api";
 import { PokemonList, PokemonDetails } from "../src/types/PokemonArray";
 
+const asd : any = "asd"
+
 interface AppState {
   query: string;
   pokemonList: PokemonList[];
