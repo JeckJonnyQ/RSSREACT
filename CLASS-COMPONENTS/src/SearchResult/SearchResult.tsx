@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import "./SearchResult.scss";
 
-import { useStarWarsContext } from "../Context/Context";
+import { useStarWarsContext } from "../Context/ContextHook";
 
 export function SearchResult(): ReactElement {
   const { charactersList } = useStarWarsContext();

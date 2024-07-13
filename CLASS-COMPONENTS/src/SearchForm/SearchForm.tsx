@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import "./SearchForm.scss";
 
 import ErrorButton from "../ErrorButton/ErrorButton";
-import { useStarWarsContext } from "../Context/Context";
+import { useStarWarsContext } from "../Context/ContextHook";
 
 export function SearchForm(): ReactElement {
   const {
@@ -21,13 +21,11 @@ export function SearchForm(): ReactElement {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-
     if (searchValue.trim().length) {
       await fetchSingleCharacter();
     } else {
       await fetchAllCharacters();
     }
-
     setIsLoading(false);
   };
 
@@ -40,6 +38,21 @@ export function SearchForm(): ReactElement {
         console.error("Error loading characters:", error);
       });
   }, []);
+
+  // const fetchAllCharactersCallback = useCallback(async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     await fetchAllCharacters();
+  //   } catch (error) {
+  //     console.error("Error loading characters:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }, [fetchAllCharacters, setIsLoading]);
+
+  // useEffect(() => {
+  //   fetchAllCharactersCallback();
+  // }, [fetchAllCharactersCallback, setIsLoading]);
 
   return (
     <>
