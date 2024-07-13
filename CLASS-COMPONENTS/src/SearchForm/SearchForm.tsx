@@ -1,41 +1,49 @@
-import { Component } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import "./SearchForm.scss";
 
-import { PokemonList } from "../types/PokemonArray";
+import ErrorButton from "../ErrorButton/ErrorButton";
+import { useStarWarsContext } from "../Context/Context";
 
-interface SearchFormProps {
-  searchValue: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  pokemonList: PokemonList[];
-}
+export function SearchForm(): ReactElement {
+  const {
+    searchValue,
+    setSearchValue,
+    fetchAllCharacters,
+    fetchSingleCharacter,
+  } = useStarWarsContext();
 
-interface SearchFormState {
-  hasError: boolean;
-}
+  const [isLoading, setIsLoading] = useState(false); // State to track loading
 
-class SearchForm extends Component<SearchFormProps, SearchFormState> {
-  state = {
-    hasError: false,
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value);
   };
 
-  handleButtonClick = () => {
-    try {
-      throw new Error("Error triggered by button click in SearchForm");
-    } catch (error) {
-      console.error("Error caught in SearchForm:", error);
-      this.setState({ hasError: true });
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsLoading(true);
+
+    if (searchValue.trim().length) {
+      await fetchSingleCharacter();
+    } else {
+      await fetchAllCharacters();
     }
+
+    setIsLoading(false);
   };
 
-  render() {
-    const { searchValue, onChange, onSubmit } = this.props;
+  useEffect(() => {
+    setIsLoading(true);
+    fetchAllCharacters()
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        setIsLoading(false);
+        console.error("Error loading characters:", error);
+      });
+  }, []);
 
-    if (this.state.hasError) {
-      throw new Error("Error in SearchForm component");
-    }
-
-    return (
+  return (
+    <>
+      <div>{searchValue}</div>
       <div className="wrapper__search">
         <form className="search__form" onSubmit={onSubmit}>
           <input
@@ -53,18 +61,13 @@ class SearchForm extends Component<SearchFormProps, SearchFormState> {
             >
               Search
             </button>
-            <button
-              className="search__form-inner_btn"
-              type="button"
-              onClick={this.handleButtonClick}
-            >
-              Error
-            </button>
+            <ErrorButton />
           </div>
         </form>
       </div>
-    );
-  }
+      {isLoading && <div className="loader">Loading...</div>}
+    </>
+  );
 }
 
 export default SearchForm;
