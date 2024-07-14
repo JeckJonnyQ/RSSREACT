@@ -12,7 +12,7 @@ export function SearchForm(): ReactElement {
     fetchSingleCharacter,
   } = useStarWarsContext();
 
-  const [isLoading, setIsLoading] = useState(false); // State to track loading
+  const [isLoading, setIsLoading] = useState(false);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);

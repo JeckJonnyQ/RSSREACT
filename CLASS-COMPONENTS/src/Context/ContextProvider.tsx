@@ -3,10 +3,14 @@ import { fetchStarWarsPeople } from "../api/api";
 import { DataCharacter } from "../types/dataInterface";
 import { ProviderProps } from "../types/ProvaiderProps";
 
+// import { UseSearchQueryLocalStorageHook } from "../Context/ContextHook";
+
 export function StarWarsProvider({ children }: ProviderProps): ReactElement {
   const [searchValue, setSearchValue] = useState<string>("");
   const [charactersList, setCharactersList] = useState<DataCharacter[]>([]);
   const [error, setError] = useState<Error | undefined>(undefined);
+
+  // const [searchValue, setSearchValue] = UseSearchQueryLocalStorageHook();
 
   const fetchAllCharacters = async () => {
     try {
